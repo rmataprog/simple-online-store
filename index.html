@@ -6,33 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
     <title>Simple Online Store</title>
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper">
-            <a>Logo</a>
-            <ul class="right">
-                <li><a href=""><i class="material-icons">shopping_cart</i></a></li>
-                <li>
-                    <div class="input-field">
-                        <input type="search">
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-
-    </div>
-    <footer class="page-footer">
-        <div class="container">
-            <div class="footer-copyright">
-                Simple Online Store
+    <div>
+        <nav class="deep-purple darken-4">
+            <div class="nav-wrapper">
+                <a>Logo</a>
+                <ul class="right">
+                    <li><a href=""><i class="material-icons">shopping_cart</i></a></li>
+                    <li>
+                        <div class="input-field">
+                            <input type="search">
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="carousel carousel-slider center">
+                <div class="carousel-fixed-item center">
+                    <a class="btn waves-effect waves-light deep-purple darken-4" href="html/productsList.html">
+                        View All
+                    </a>
+                </div>
+                <div class="carousel-item white-text" href="#one!" style="background-image: url(assets/images/pexels-sam-lion-5709614.jpg);">
+                    <h2>Women's Clothing</h2>
+                    <p class="white-text">Shop for the latest fashion styles and trends for women</p>
+                </div>
+                <div class="carousel-item white-text" href="#two!" style="background-image: url(assets/images/pexels-artem-beliaikin-994517.jpg);">
+                    <h2>Men's Clothing</h2>
+                    <p class="white-text">Shop the latest in Men's Fashion for fresh trends</p>
+                </div>
+                <div class="carousel-item white-text" href="#three!" style="background-image: url(assets/images/pexels-karol-d-325153.jpg);">
+                    <h2>Electronics</h2>
+                    <p class="white-text">Shop for the best selection of electronics</p>
+                </div>
+                <div class="carousel-item white-text" href="#four!" style="background-image: url(assets/images/pexels-kenneth-gorzal-surillo-5157291.jpg);">
+                    <h2>Jewelery</h2>
+                    <p class="white-text">Find earrings, necklaces, bracelets, rings, and more</p>
+                </div>
             </div>
         </div>
-    </footer>
+        <footer class="page-footer deep-purple darken-3">
+            <div>
+                <div class="footer-copyright">
+                    Simple Online Store
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/materialize.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

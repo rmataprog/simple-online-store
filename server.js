@@ -7,6 +7,7 @@ var productLanding = fs.readFileSync('html/productLanding.html');
 var productList = fs.readFileSync('html/productsList.html');
 var script = fs.readFileSync('js/script.js');
 var materializeScript = fs.readFileSync('js/materialize.js');
+var productLandingScript = fs.readFileSync('js/productLanding.js');
 var productListScript = fs.readFileSync('js/productList.js');
 var style = fs.readFileSync('css/style.css');
 var materializeStyle = fs.readFileSync('css/materialize.css');
@@ -40,6 +41,9 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/js/productList.js') {
         res.writeHead(200, { 'Content-Type': 'text/javascript' });
         res.write(productListScript);
+    } else if (req.url === '/js/productLanding.js') {
+        res.writeHead(200, { 'Content-Type': 'text/javascript' });
+        res.write(productLandingScript);
     } else if (req.url === '/css/style.css') {
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.write(style);

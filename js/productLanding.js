@@ -5,14 +5,63 @@
         session: window.localStorage
     };
 
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onload = function() {
+    var get_selected = function(input) {
         var selected_item = parseInt(PRODUCT_LANDING.session.getItem('selected_item'));
-        var data = JSON.parse(this.responseText);
+        var data = JSON.parse(input);
         var selected_item_data = (data.filter(item => {
             return item.id === selected_item;
         })).length > 0 ? (data.filter(item => { return item.id === selected_item; }))[0] : {};
+
+        return selected_item_data
+    };
+
+    var get_cart = function() {
+        var cart;
+        if(PRODUCT_LANDING.session.getItem('cart') !== null) {
+            cart = JSON.parse(PRODUCT_LANDING.session.getItem('cart'));
+        } else {
+            PRODUCT_LANDING.session.setItem('cart', '[]');
+            cart = [];
+        }
+
+        return cart;
+    };
+
+    var set_cart = function(input) {
+        var flag;
+        var cart = get_cart();
+        if(cart.length > 0) {
+            var data = cart.filter((item) => {
+                return item.id === input.id;
+            });
+            if(data.length === 0) {
+                flag = true;
+                cart.push({
+                    id: input.id,
+                    quantity: 1
+                });
+            } else {
+                flag = false;
+            };
+        } else {
+            cart = [];
+            flag = true;
+            cart.push({
+                id: input.id,
+                quantity: 1
+            });
+        };
+
+        PRODUCT_LANDING.session.setItem('cart', JSON.stringify(cart));
+
+        return flag;
+    }
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+        
+        var selected_item_data = get_selected(this.responseText);
         
         elementsCreator(selected_item_data);
     }
@@ -63,7 +112,18 @@
         var div_row_1_container_p_description = document.createElement('p');
         div_row_1_container_p_description.textContent = `${input.description}`;
         var div_row_1_container_p_rate = document.createElement('p');
-        div_row_1_container_p_rate.textContent = `${input.rating.rate} - ${input.rating.count}`;
+        var div_row_1_container_p_rate_star = document.createElement('i');
+        div_row_1_container_p_rate_star.className = 'material-icons';
+        div_row_1_container_p_rate_star.textContent = 'star';
+        var div_row_1_container_p_rate_star_text = document.createTextNode(`${input.rating.rate} - `);
+        var div_row_1_container_p_rate_votes = document.createElement('i');
+        div_row_1_container_p_rate_votes.className = 'material-icons';
+        div_row_1_container_p_rate_votes.textContent = 'person';
+        var div_row_1_container_p_rate_votes_text = document.createTextNode(input.rating.count);
+        div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_star);
+        div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_star_text);
+        div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_votes);
+        div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_votes_text);
         var p_list = [div_row_1_container_p_name,div_row_1_container_p_category,div_row_1_container_p_price,
             div_row_1_container_p_description,div_row_1_container_p_rate];
         p_list.forEach((p) => {
@@ -92,6 +152,10 @@
         div_row_2_container_1_button_icon.className = 'material-icons';
         div_row_2_container_1_button_icon.textContent = 'add_shopping_cart';
         div_row_2_container_1_button.appendChild(div_row_2_container_1_button_icon);
+        div_row_2_container_1_button.addEventListener('click', function() {
+            console.log(input);
+            add_shopping_cart_function(input);
+        }, false);
         div_row_2_container_2_button.href = 'productsList.html';
         div_row_2_container_2_button.textContent = 'More items';
 
@@ -104,5 +168,14 @@
         PRODUCT_LANDING.data_container.innerHTML = '';
         PRODUCT_LANDING.data_container.appendChild(image_div);
         PRODUCT_LANDING.data_container.appendChild(data_div);
+    };
+
+    var add_shopping_cart_function = function(input) {
+        var exists = set_cart(input);
+        if(!exists) {
+            console.log('item already exists in cart');
+        } else {
+            console.log('item was added in the cart');
+        }
     };
 })();

@@ -108,7 +108,7 @@
         var div_row_1_container_p_category = document.createElement('p');
         div_row_1_container_p_category.textContent = `${input.category}`;
         var div_row_1_container_p_price = document.createElement('p');
-        div_row_1_container_p_price.textContent = `${input.price}`;
+        div_row_1_container_p_price.textContent = `$${input.price}`;
         var div_row_1_container_p_description = document.createElement('p');
         div_row_1_container_p_description.textContent = `${input.description}`;
         var div_row_1_container_p_rate = document.createElement('p');
@@ -152,10 +152,23 @@
         div_row_2_container_1_button_icon.className = 'material-icons';
         div_row_2_container_1_button_icon.textContent = 'add_shopping_cart';
         div_row_2_container_1_button.appendChild(div_row_2_container_1_button_icon);
+
+        var cart = get_cart();
+
+        var find_in_cart = cart.filter((item) => {
+            return item.id === input.id;
+        });
+
+        if(find_in_cart.length > 0) {
+            div_row_2_container_1_button.classList.add('disabled');
+        };
+
         div_row_2_container_1_button.addEventListener('click', function() {
-            console.log(input);
             add_shopping_cart_function(input);
+            div_row_2_container_1_button.classList.add('disabled');
+            M.toast({html: 'Item was added in cart!'});
         }, false);
+
         div_row_2_container_2_button.href = 'productsList.html';
         div_row_2_container_2_button.textContent = 'More items';
 

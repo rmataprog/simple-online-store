@@ -4,7 +4,11 @@
         database: null,
         data_container: document.querySelector('div#cart-list'),
         session: window.localStorage,
-        total: document.querySelector('p#total')
+        items_total: 0,
+        items_total_ele: document.querySelector('span#items_total'),
+        tax_ele: document.querySelector('span#tax'),
+        tax_percentage: 16,
+        tax: 0
     };
 
     var get_cart = function() {
@@ -134,6 +138,9 @@
             }
         });
 
-        CART.total.textContent = `${total}$`;
+        var tax = ((CART.tax_percentage*total)/100).toFixed(2);
+
+        CART.items_total_ele.textContent = `${total.toFixed(2)}`;
+        CART.tax_ele.textContent = `${tax}`;
     };
 })();

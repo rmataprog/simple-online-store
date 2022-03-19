@@ -10,6 +10,8 @@ var materializeScript = fs.readFileSync('js/materialize.js');
 var productLandingScript = fs.readFileSync('js/productLanding.js');
 var productListScript = fs.readFileSync('js/productList.js');
 var cartScript = fs.readFileSync('js/cart.js');
+var cartScriptStates = fs.readFileSync('js/cart_state_select.js');
+var cartScriptZip = fs.readFileSync('js/cart_zip_select.js');
 var style = fs.readFileSync('css/style.css');
 var materializeStyle = fs.readFileSync('css/materialize.css');
 var productListStyle = fs.readFileSync('css/productsList.css');
@@ -19,6 +21,8 @@ var image_3 = fs.readFileSync('assets/images/pexels-karol-d-325153.jpg');
 var image_4 = fs.readFileSync('assets/images/pexels-kenneth-gorzal-surillo-5157291.jpg');
 var image_5 = fs.readFileSync('assets/images/pexels-sam-lion-5709614.jpg');
 var data = fs.readFileSync('assets/data.json');
+var states = fs.readFileSync('assets/states.json');
+var zip = fs.readFileSync('assets/zip.json');
 
 var server = http.createServer((req, res) => {
     if (req.url === '/') {
@@ -48,6 +52,12 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/js/cart.js') {
         res.writeHead(200, { 'Content-Type': 'text/javascript' });
         res.write(cartScript);
+    } else if (req.url === '/js/cart_state_select.js') {
+        res.writeHead(200, { 'Content-Type': 'text/javascript' });
+        res.write(cartScriptStates);
+    } else if (req.url === '/js/cart_zip_select.js') {
+        res.writeHead(200, { 'Content-Type': 'text/javascript' });
+        res.write(cartScriptZip);
     } else if (req.url === '/css/style.css') {
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.write(style);
@@ -75,6 +85,12 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/assets/data.json') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(data);
+    } else if (req.url === '/assets/states.json') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.write(states);
+    } else if (req.url === '/assets/zip.json') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.write(zip);
     }
 
     res.end();

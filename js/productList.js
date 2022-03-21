@@ -10,6 +10,7 @@
     
     xhttp.onload = function() {
         var data = JSON.parse(this.responseText);
+
         data.forEach((element) => {
             card_creator(element);
         })

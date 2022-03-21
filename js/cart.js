@@ -29,6 +29,7 @@
 
     xhttp.onload = function() {
         CART.database = JSON.parse(this.responseText);
+        console.log(CART.database);
         var cart = get_cart();
 
         cart.forEach((item) => {
@@ -36,9 +37,16 @@
                 return ele.id === item.id
             });
 
-            item_data[0].quantity = item.quantity;
+            var input = {
+                id: item_data[0].id,
+                image: item_data[0].image,
+                title: item_data[0].title,
+                price: item_data[0].price,
+                quantity: item.quantity,
+                stock: item_data[0].quantity
+            };
 
-            var elem = element_creator(item_data[0]);
+            var elem = element_creator(input);
 
             CART.data_container.appendChild(elem);
         });
@@ -91,17 +99,40 @@
         input_ele.type = 'number';
         input_ele.min = '1';
         input_ele.value = input.quantity;
+        input_ele.dataset.id = input.id;
+
+        var span_helper = document.createElement('span');
+        span_helper.className = 'helper-text';
+        span_helper.dataset.error = 'not enough stock';
+
+        if(input.quantity > input.stock) {
+            input_ele.classList.add('invalid');
+        };
+
         div_col_3.appendChild(input_ele);
+        div_col_3.appendChild(span_helper);
 
         var div_col_4 = document.createElement('div');
         div_col_4.classList.add('col');
         div_col_4.classList.add('s2');
 
         var sub_total = document.createElement('p');
-        sub_total.textContent = `${input_ele.value*input.price}$`;
+        sub_total.textContent = `${(input_ele.value*input.price).toFixed(2)}$`;
         div_col_4.appendChild(sub_total);
 
-        input_ele.addEventListener('change', function() {
+        input_ele.addEventListener('change', function(e) {
+            var target = e.target;
+
+            if(input.stock < target.value) {
+                if(!target.classList.contains('invalid')) {
+                    target.classList.add('invalid');
+                };
+            } else {
+                if(target.classList.contains('invalid')) {
+                    target.classList.remove('invalid');
+                };
+            }
+
             var cart = get_cart();
             var index = cart.findIndex((item) => {
                 return item.id === input.id;
@@ -109,7 +140,7 @@
             cart[index].quantity = this.value;
             CART.session.setItem('cart', JSON.stringify(cart));
 
-            sub_total.textContent = `${this.value*input.price}$`;
+            sub_total.textContent = `${(this.value*input.price).toFixed(2)}$`;
 
             total_calculator(CART.database);
         }, false);

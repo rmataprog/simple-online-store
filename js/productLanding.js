@@ -124,11 +124,14 @@
         div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_star_text);
         div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_votes);
         div_row_1_container_p_rate.appendChild(div_row_1_container_p_rate_votes_text);
+
         var p_list = [div_row_1_container_p_name,div_row_1_container_p_category,div_row_1_container_p_price,
             div_row_1_container_p_description,div_row_1_container_p_rate];
         p_list.forEach((p) => {
             div_row_1_container.appendChild(p);
         });
+
+        data_div.appendChild(div_row_1);
 
         var div_row_2 = document.createElement('div');
         div_row_2.className = 'row';
@@ -153,6 +156,17 @@
         div_row_2_container_1_button_icon.textContent = 'add_shopping_cart';
         div_row_2_container_1_button.appendChild(div_row_2_container_1_button_icon);
 
+        var div_row_3 = document.createElement('div');
+        div_row_3.className = 'row';
+        var div_row_3_container = document.createElement('div');
+        div_row_3_container.classList.add('col');
+        div_row_3_container.classList.add('s12');
+        div_row_3.appendChild(div_row_3_container);
+        var div_row_3_container_p = document.createElement('p');
+        div_row_3_container_p.classList.add('flow-text');
+        div_row_3_container_p.classList.add('text-darken-2');
+        div_row_3_container.appendChild(div_row_3_container_p);
+
         var cart = get_cart();
 
         var find_in_cart = cart.filter((item) => {
@@ -160,6 +174,16 @@
         });
 
         if(find_in_cart.length > 0) {
+            div_row_3_container_p.classList.add('blue-text');
+            div_row_3_container_p.textContent = `Item already in cart`;
+            data_div.appendChild(div_row_3);
+            div_row_2_container_1_button.classList.add('disabled');
+        };
+
+        if(input.quantity === 0) {
+            div_row_3_container_p.classList.add('red-text');
+            div_row_3_container_p.textContent = `Out of stock`;
+            data_div.appendChild(div_row_3);
             div_row_2_container_1_button.classList.add('disabled');
         };
 
@@ -175,7 +199,6 @@
         div_row_2_container_1.appendChild(div_row_2_container_1_button);
         div_row_2_container_2.appendChild(div_row_2_container_2_button);
 
-        data_div.appendChild(div_row_1);
         data_div.appendChild(div_row_2);
 
         PRODUCT_LANDING.data_container.innerHTML = '';

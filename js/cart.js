@@ -29,29 +29,47 @@
 
     xhttp.onload = function() {
         CART.database = JSON.parse(this.responseText);
-        console.log(CART.database);
         var cart = get_cart();
 
-        cart.forEach((item) => {
-            var item_data = CART.database.filter((ele) => {
-                return ele.id === item.id
+        if(cart.length === 0) {
+            var empty_image = document.createElement('img');
+            empty_image.src = '../assets/images/delete.png';
+            empty_image.className = 'responsive-img';
+            var p_image = document.createElement('p');
+            p_image.appendChild(empty_image);
+            p_image.className = 'center-align';
+            var img_div_col = document.createElement('div');
+            img_div_col.classList.add('col');
+            img_div_col.classList.add('s12');
+            img_div_col.appendChild(p_image);
+            var img_div = document.createElement('div');
+            img_div.classList.add('row');
+            img_div.classList.add('valign-wrapper');
+            img_div.appendChild(img_div_col);
+
+            CART.data_container.appendChild(img_div);
+        } else {
+            cart.forEach((item) => {
+                var item_data = CART.database.filter((ele) => {
+                    return ele.id === item.id
+                });
+    
+                var input = {
+                    id: item_data[0].id,
+                    image: item_data[0].image,
+                    title: item_data[0].title,
+                    price: item_data[0].price,
+                    quantity: item.quantity,
+                    stock: item_data[0].quantity
+                };
+    
+                var elem = element_creator(input);
+    
+                CART.data_container.appendChild(elem);
             });
-
-            var input = {
-                id: item_data[0].id,
-                image: item_data[0].image,
-                title: item_data[0].title,
-                price: item_data[0].price,
-                quantity: item.quantity,
-                stock: item_data[0].quantity
-            };
-
-            var elem = element_creator(input);
-
-            CART.data_container.appendChild(elem);
-        });
-
-        total_calculator(CART.database);
+    
+            total_calculator(CART.database);
+        }
     }
 
     xhttp.open('GET', '../assets/data.json', true);

@@ -7,6 +7,7 @@
         select_county: document.querySelector('select#county_list'),
         select_eles: document.querySelectorAll('select'),
         select_state: document.querySelector('select#state_list'),
+        select_zip: document.querySelector('select#zip_list'),
         state_data: null,
         zip_list: null
     };
@@ -22,26 +23,86 @@
 
     ZIP.select_state.addEventListener('change', function(e) {
         var target = e.target;
-        get_cities(target.value);
-    }, false);
-
-    ZIP.select_city.addEventListener('change', function(e) {
-        var target = e.target;
-        get_counties(target.value);
+        ZIP.select_city.innerHTML = '';
+        ZIP.select_zip.innerHTML = '';
+        get_counties({
+            state: target.value
+        });
     }, false);
 
     ZIP.select_county.addEventListener('change', function(e) {
         var target = e.target;
-        get_zip_codes(target.value);
+        var state = ZIP.select_state.value;
+        ZIP.select_zip.innerHTML = '';
+        get_cities({
+            county: target.value,
+            state: state
+        });
     }, false);
+
+    ZIP.select_city.addEventListener('change', function(e) {
+        var target = e.target;
+        var state = ZIP.select_state.value;
+        var county = ZIP.select_county.value;
+        get_zip_codes({
+            city: target.value,
+            state: state,
+            county: county
+        });
+    }, false);
+
+    var get_counties = function(input) {
+        var elems = ZIP.select_eles;
+        var elem_county = elems.item(1);
+        elem_county.innerHTML = '';
+
+        var counties = new Set();
+
+        ZIP.state_data = ZIP.zip_list.filter((location) => {
+            return location.state === input.state;
+        });
+
+        ZIP.state_data.forEach((zip) => {
+            counties.add(zip.county);
+        });
+
+        var counties_array = [];
+
+        counties.forEach((county) => {
+            counties_array.push(county);
+        });
+
+        counties_array.sort();
+
+        var option = document.createElement('option');
+
+        option.value = '';
+        option.textContent = 'Choose county';
+        option.selected = true;
+        option.disabled = true;
+
+        elem_county.appendChild(option);
+
+        counties_array.forEach((county) => {
+            var option = document.createElement('option');
+
+            option.value = county;
+            option.textContent = county;
+
+            elem_county.appendChild(option);
+        });
+
+        var instances = M.FormSelect.init(elems, ZIP.options);
+        var instance = M.FormSelect.getInstance(elem_county);
+    };
 
     var get_cities = function(input) {
         var elems = ZIP.select_eles;
-        var elem_city = elems.item(1);
+        var elem_city = elems.item(2);
         elem_city.innerHTML = '';
 
         ZIP.state_data = ZIP.zip_list.filter((location) => {
-            return location.state === input;
+            return location.state === input.state && location.county === input.county;
         });
 
         var cities = new Set();
@@ -78,51 +139,6 @@
         var instance = M.FormSelect.getInstance(elem_city);
     };
 
-    var get_counties = function(input) {
-        var elems = ZIP.select_eles;
-        var elem_county = elems.item(2);
-        elem_county.innerHTML = '';
-
-        var counties = new Set();
-
-        ZIP.city_data = ZIP.state_data.filter((location) => {
-            return location.city === input ;
-        });
-
-        ZIP.city_data.forEach((zip) => {
-            counties.add(zip.county);
-        });
-
-        var counties_array = [];
-
-        counties.forEach((county) => {
-            counties_array.push(county);
-        });
-
-        counties_array.sort();
-
-        var option = document.createElement('option');
-
-        option.value = '';
-        option.textContent = 'Choose county';
-        option.selected = true;
-        option.disabled = true;
-
-        elem_county.appendChild(option);
-
-        counties_array.forEach((county) => {
-            var option = document.createElement('option');
-
-            option.value = county;
-            option.textContent = county;
-
-            elem_county.appendChild(option);
-        });
-
-        var instances = M.FormSelect.init(elems, ZIP.options);
-        var instance = M.FormSelect.getInstance(elem_county);
-    };
-
     var get_zip_codes = function(input) {
         var elems = ZIP.select_eles;
         var elem_zip = elems.item(3);
@@ -130,11 +146,11 @@
 
         var zip_codes = new Set();
 
-        ZIP.county_data = ZIP.city_data.filter((location) => {
-            return location.county === input ;
+        ZIP.state_data = ZIP.zip_list.filter((location) => {
+            return location.state === input.state && location.county === input.county && location.city === input.city;
         });
 
-        ZIP.county_data.forEach((zip) => {
+        ZIP.state_data.forEach((zip) => {
             zip_codes.add(zip.zip_code);
         });
 

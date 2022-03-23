@@ -13,6 +13,13 @@
         var elems = STATES.select_eles;
         var elem = elems.item(0);
 
+        var option = document.createElement('option');
+        option.value = "";
+        option.textContent = `Choose your state`;
+        option.selected = true;
+        option.disabled = true;
+        elem.appendChild(option);
+
         STATES.states_list.forEach((state) => {
             var option = document.createElement('option');
             option.value = state.abbreviation;

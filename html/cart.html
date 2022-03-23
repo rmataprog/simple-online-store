@@ -28,7 +28,7 @@
         </nav>
         <div class="row">
             <div class="col s5 offset-s1" id="cart-list">
-                <div class="row">
+                <!--div class="row">
                     <div class="col s2">
                         <img class="responsive-img" src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg">
                     </div>
@@ -63,7 +63,7 @@
                     <div class="col s2">
                         <p>109.95$</p>
                     </div>
-                </div>
+                </div-->
             </div>
             <div class="col s4">
                 <div class="section">
@@ -83,16 +83,26 @@
                         <div class="input-field col s6">
                             <input type="text" id="first_name">
                             <label for="first_name">First name</label>
+                            <span class="helper-text" data-error="Please provide a first name"></span>
                         </div>
                         <div class="input-field col s6">
                             <input type="text" id="last_name">
                             <label for="last_name">Last Name</label>
+                            <span class="helper-text" data-error="Please provide a last name"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" id="email">
+                            <label for="email">Email</label>
+                            <span class="helper-text" data-error="Please provide a correctly formatted email"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input type="text" id="address_1">
                             <label for="address_1">Address 1</label>
+                            <span class="helper-text" data-error="Please provide an address"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -104,16 +114,9 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <select id="state_list">
-                                <option value="" disabled selected>Choose your state</option>
                             </select>
                             <label>State</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <select id="city_list">
-                            </select>
-                            <label>City</label>
+                            <span class="helper-text" data-error="Please select a state"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -121,6 +124,15 @@
                             <select id="county_list">
                             </select>
                             <label>County</label>
+                            <span class="helper-text" data-error="Please select a county"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="city_list">
+                            </select>
+                            <label>City</label>
+                            <span class="helper-text" data-error="Please select a city"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -128,12 +140,13 @@
                             <select id="zip_list">
                             </select>
                             <label>Zip code</label>
+                            <span class="helper-text" data-error="Please select a zip code"></span>
                         </div>
                     </div>
                 </div>
                 <div class="section">
                     <button class="btn">Cancel</button>
-                    <button class="btn">Place Order</button>
+                    <button class="btn" id="place_order">Place Order</button>
                     <a class="waves-effect waves-light btn" href="productsList.html">More items</a>
                 </div>
             </div>

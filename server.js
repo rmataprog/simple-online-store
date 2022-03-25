@@ -12,6 +12,7 @@ var productListScript = fs.readFileSync('js/productList.js');
 var cartScript = fs.readFileSync('js/cart.js');
 var cartScriptStates = fs.readFileSync('js/cart_state_select.js');
 var cartScriptZip = fs.readFileSync('js/cart_zip_select.js');
+var cartScriptPlaceOrder = fs.readFileSync('js/cart_place_order.js');
 var style = fs.readFileSync('css/style.css');
 var materializeStyle = fs.readFileSync('css/materialize.css');
 var productListStyle = fs.readFileSync('css/productsList.css');
@@ -59,6 +60,9 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/js/cart_zip_select.js') {
         res.writeHead(200, { 'Content-Type': 'text/javascript' });
         res.write(cartScriptZip);
+    } else if (req.url === '/js/cart_place_order.js') {
+        res.writeHead(200, { 'Content-Type': 'text/javascript' });
+        res.write(cartScriptPlaceOrder);
     } else if (req.url === '/css/style.css') {
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.write(style);

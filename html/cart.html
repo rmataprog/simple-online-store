@@ -100,6 +100,13 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <input type="tel" id="phone" required>
+                            <label for="phone">Phone</label>
+                            <span class="helper-text" data-error="Please provide a correctly formatted phone number: (XXX) XXX-XXXX OR XXXXXXXXXX"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
                             <input type="text" id="address_1" required>
                             <label for="address_1">Address 1</label>
                             <span class="helper-text" data-error="Please provide an address"></span>
@@ -149,6 +156,17 @@
                     <button class="btn" id="place_order">Place Order</button>
                     <a class="waves-effect waves-light btn" href="productsList.html">More items</a>
                 </div>
+            </div>
+        </div>
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <div class="center-align">
+                    <img src="../assets/images/box.png" class="responsive-img">
+                </div>
+                <p class="flow-text">
+                    For some of the items you are trying to purchase the requested amount is lower than what we 
+                    have in stock. Please check.
+                </p>
             </div>
         </div>
         <footer class="page-footer deep-purple darken-3">

@@ -1,11 +1,16 @@
 (function() {
     var ORDER = {
         cancel_button: document.querySelector('#cancel_order'),
+        database: null,
         form_inputs: document.querySelector('#form_inputs').querySelectorAll('.input-field'),
         place_order_button: document.querySelector('#place_order'),
         select_eles: document.querySelectorAll('select'),
         session: window.localStorage
     };
+
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {});
+    var instance = M.Modal.getInstance(elems.item(0));
 
     var get_cart = function() {
         var cart;
@@ -26,6 +31,15 @@
         ORDER.place_order_button.classList.add('disabled');
     };
 
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+        ORDER.database = JSON.parse(this.responseText);
+    };
+
+    xhttp.open('GET', '../assets/data.json', true);
+    xhttp.send();
+
     ORDER.form_inputs.forEach((input) => {
         var element = input.firstElementChild;
         if(element.nodeType === 3) {
@@ -37,31 +51,40 @@
     })
 
     ORDER.place_order_button.addEventListener('click', function() {
-        ORDER.form_inputs.forEach((input) => {
-            var element = input.firstElementChild;
-            if(element.nodeType === 3) {
-            } else {
-                if(element.tagName === 'INPUT') {
-                    if (element.required) {
-                        switch (element.id) {
-                            case 'email':
-                                var valid = /[^@]+@[^@]+/.test(element.value);
-                                validator({valid: valid, element: element});
-                                break;
-                            default:
-                                var valid = element.value.length > 0 ? true : false;
-                                validator({valid: valid, element: element});
-                                break;
-                        }
-                    };
+
+        if(quantities_checker()) {
+            ORDER.form_inputs.forEach((input) => {
+                var element = input.firstElementChild;
+                if(element.nodeType === 3) {
                 } else {
-                    var select = element.querySelector('select');
-                    var valid = select.value === '' ? false : true;
-                    console.log(select.parentElement);
-                    validator({valid: valid, element: select.parentElement});
+                    if(element.tagName === 'INPUT') {
+                        if (element.required) {
+                            switch (element.id) {
+                                case 'email':
+                                    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(element.value);
+                                    validator({valid: valid, element: element});
+                                    break;
+                                case 'phone':
+                                    var valid = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(element.value);
+                                    validator({valid: valid, element: element});
+                                    break;
+                                default:
+                                    var valid = element.value.length > 0 ? true : false;
+                                    validator({valid: valid, element: element});
+                                    break;
+                            }
+                        };
+                    } else {
+                        var select = element.querySelector('select');
+                        var valid = select.value === '' ? false : true;
+                        console.log(select.parentElement);
+                        validator({valid: valid, element: select.parentElement});
+                    }
                 }
-            }
-        })
+            });
+        } else {
+            instance.open();
+        }
     }, false);
 
     var validator = function(data) {
@@ -78,5 +101,20 @@
                 data.element.classList.add('valid');
             };
         };
+    };
+
+    var quantities_checker = function() {
+        var cart = get_cart();
+        var flag = true;
+        cart.forEach((item) => {
+            var item_data = (ORDER.database.filter((item_data_pos) => {
+                return item_data_pos.id === item.id
+            }))[0];
+            
+            if (item_data.quantity < parseInt(item.quantity)) {
+                flag = false;
+            };
+        });
+        return flag;
     };
 })();

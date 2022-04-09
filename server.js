@@ -3,10 +3,12 @@ var fs = require('fs');
 
 var index = fs.readFileSync('index.html');
 var cart = fs.readFileSync('html/cart.html');
+var orderPlaced = fs.readFileSync('html/order_placed.html');
 var productLanding = fs.readFileSync('html/productLanding.html');
 var productList = fs.readFileSync('html/productsList.html');
 var script = fs.readFileSync('js/script.js');
 var materializeScript = fs.readFileSync('js/materialize.js');
+var orderPlacedScript = fs.readFileSync('js/order_placed.js');
 var productLandingScript = fs.readFileSync('js/productLanding.js');
 var productListScript = fs.readFileSync('js/productList.js');
 var cartScript = fs.readFileSync('js/cart.js');
@@ -34,6 +36,9 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/html/cart.html') {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.write(cart);
+    } else if (req.url === '/html/order_placed.html') {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write(orderPlaced);
     } else if (req.url === '/html/productLanding.html') {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.write(productLanding);
@@ -64,6 +69,9 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/js/cart_place_order.js') {
         res.writeHead(200, { 'Content-Type': 'text/javascript' });
         res.write(cartScriptPlaceOrder);
+    } else if (req.url === '/js/order_placed.js') {
+        res.writeHead(200, { 'Content-Type': 'text/javascript' });
+        res.write(orderPlacedScript);
     } else if (req.url === '/css/style.css') {
         res.writeHead(200, { 'Content-Type': 'text/css' });
         res.write(style);

@@ -7,7 +7,7 @@
         items_total: 0,
         items_total_ele: document.querySelector('span#items_total'),
         tax_ele: document.querySelector('span#tax'),
-        tax_percentage: 16,
+        tax_percentage: 5,
         tax: 0
     };
 

@@ -1,10 +1,15 @@
 (function() {
     var PRODUCT_LIST = {
-        list_container: document.getElementsByTagName('div').item(0).querySelector('div.row'),
+        buttons_container: document.getElementsByTagName('div').item(0).querySelectorAll('div.row').item(0),
+        list_container: document.getElementsByTagName('div').item(0).querySelectorAll('div.row').item(1),
+        product_search_input: document.getElementById('search'),
         session: window.localStorage
     };
     
     PRODUCT_LIST.list_container.innerHTML = '';
+
+    var products = [];
+    var categories = {};
     
     var xhttp = new XMLHttpRequest();
     
@@ -12,8 +17,18 @@
         var data = JSON.parse(this.responseText);
 
         data.forEach((element) => {
-            card_creator(element);
-        })
+            var item_elem = card_creator(element);
+            products.push({
+                product: element,
+                product_ele: item_elem
+            });
+            if(categories[element.category] === undefined) {
+                categories[element.category] = [];
+            }
+            categories[element.category].push(element.id);
+            PRODUCT_LIST.list_container.appendChild(item_elem);
+        });
+        buttons_creator();
     }
     
     xhttp.open('GET', '../assets/data.json', true);
@@ -81,7 +96,178 @@
         card_div.appendChild(card_content);
         card_div.appendChild(card_reveal);
         column_div.appendChild(card_div);
-    
-        PRODUCT_LIST.list_container.appendChild(column_div);
+
+        return column_div;
     }
+
+    var buttons_creator = function() {
+        var checkboxes = [];
+        var all_p = document.createElement('p');
+        all_p.classList.add('col');
+        all_p.classList.add('s2');
+        all_p.classList.add('offset-s1');
+        var all_label = document.createElement('label');
+        var all_check = document.createElement('input');
+        all_check.type = 'checkbox';
+        var all_span = document.createElement('span');
+        all_span.textContent = 'all products';
+        all_p.appendChild(all_label);
+        all_label.appendChild(all_check);
+        all_label.appendChild(all_span);
+
+        all_check.checked = true;
+
+        checkboxes.push(all_check);
+
+        PRODUCT_LIST.buttons_container.appendChild(all_p);
+
+        for (category in categories) {
+            var len = categories[category].length;
+
+            var p = document.createElement('p');
+            p.classList.add('col');
+            p.classList.add('s2');
+            var label = document.createElement('label');
+            var check = document.createElement('input');
+            check.type = 'checkbox';
+            check.checked = true;
+            var span = document.createElement('span');
+            span.textContent = `${category} (${len})`;
+            p.appendChild(label);
+            label.appendChild(check);
+            label.appendChild(span);
+            checkboxes.push(check);
+
+            PRODUCT_LIST.buttons_container.appendChild(p);
+        };
+
+        PRODUCT_LIST.buttons_container.querySelectorAll('p label input').forEach((checkbox, index) => {
+            if(index === 0){
+                checkbox.addEventListener('change', function() {
+                    if(this.checked) {
+                        checkboxes.forEach((checkbox, index) => {
+                            if(index > 0) {
+                                checkbox.checked = true;
+                            };
+                        });
+
+                        products.forEach((product) => {
+                            product.product_ele.style.display = '';
+                        });
+                    } else {
+                        checkboxes.forEach((checkbox, index) => {
+                            if(index > 0) {
+                                checkbox.checked = false;
+                            }
+                        });
+                        products.forEach((product) => {
+                            product.product_ele.style.display = 'none';
+                        });
+                    }
+                }, false);
+            } else {
+                checkbox.addEventListener('change', function() {
+                    if(this.checked) {
+                        var all_checked = true;
+
+                        checkboxes.forEach((checkbox, index) => {
+                            if(index > 0) {
+                                if(!checkbox.checked) {
+                                    all_checked = false;
+                                };
+
+                                products_switcher(checkbox, index);
+                            };
+                        });
+
+                        if(all_checked) {
+                            checkboxes[0].checked = true;
+                        } else {
+                            checkboxes[0].checked = false;
+                        };
+                    } else {
+                        checkboxes[0].checked = false;
+
+                        checkboxes.forEach((checkbox, index) => {
+                            if(index > 0) {
+                                products_switcher(checkbox, index);
+                            };
+                        });
+                    }
+                }, false);
+            }
+        });
+    };
+
+    var products_switcher = function(checkbox, index) {
+        switch (index) {
+            case 1:
+                products.forEach((product) => {
+                    if (product.product.category === 'men\'s clothing') {
+                        if(checkbox.checked) {
+                            product.product_ele.style.display = '';
+                        } else {
+                            product.product_ele.style.display = 'none';
+                        }
+                    }
+                });
+                break;
+            case 2:
+                products.forEach((product) => {
+                    if (product.product.category === 'jewelery') {
+                        if(checkbox.checked) {
+                            product.product_ele.style.display = '';
+                        } else {
+                            product.product_ele.style.display = 'none';
+                        }
+                    }
+                });
+                break;
+            case 3:
+                products.forEach((product) => {
+                    if (product.product.category === 'electronics') {
+                        if(checkbox.checked) {
+                            product.product_ele.style.display = '';
+                        } else {
+                            product.product_ele.style.display = 'none';
+                        }
+                    }
+                });
+                break;
+            case 4:
+                products.forEach((product) => {
+                    if (product.product.category === 'women\'s clothing') {
+                        if(checkbox.checked) {
+                            product.product_ele.style.display = '';
+                        } else {
+                            product.product_ele.style.display = 'none';
+                        }
+                    }
+                });
+                break;
+        };
+    };
+
+    PRODUCT_LIST.product_search_input.addEventListener('input', function() {
+        var input = this;
+        if(input.value.length > 0) {
+            PRODUCT_LIST.buttons_container.querySelectorAll('p label input').forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+            products.forEach((product) => {
+                if(product.product.description.toLowerCase().lastIndexOf(input.value.toLowerCase()) > -1 || product.product.title.toLowerCase().lastIndexOf(input.value.toLowerCase()) > -1){
+                    product.product_ele.style.display = ''
+                } else {
+                    product.product_ele.style.display = 'none'
+                };
+            });
+        } else {
+            PRODUCT_LIST.buttons_container.querySelectorAll('p label input').forEach((checkbox) => {
+                checkbox.checked = true;
+            });
+            products.forEach((product) => {
+                product.product_ele.style.display = '';
+            });
+        }
+    }, false);
 })();

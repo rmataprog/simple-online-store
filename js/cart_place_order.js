@@ -11,6 +11,7 @@
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems, {});
     var instance = M.Modal.getInstance(elems.item(0));
+    var instance_2 = M.Modal.getInstance(elems.item(1));
 
     var get_cart = function() {
         var cart;
@@ -87,7 +88,6 @@
                 }
             });
             if(valid_list.every((elem) => { return elem === true })) {
-                console.log('order placed');
                 var order_number = Math.floor(Math.random()*1000000);
                 var order_items = [];
                 var cart = get_cart();
@@ -130,8 +130,10 @@
                     products: order_items
                 };
                 add_order(order);
+                ORDER.session.setItem('cart', '[]');
+                window.location.assign('/html/order_placed.html');
             } else {
-                console.warn('can\'t place order');
+                instance_2.open();
             }
         } else {
             instance.open();

@@ -25,6 +25,8 @@ var image_4 = fs.readFileSync('assets/images/pexels-kenneth-gorzal-surillo-51572
 var image_5 = fs.readFileSync('assets/images/pexels-sam-lion-5709614.jpg');
 var image_6 = fs.readFileSync('assets/images/delete.png');
 var image_7 = fs.readFileSync('assets/images/box.png');
+var image_8 = fs.readFileSync('assets/images/mail.png');
+var image_9 = fs.readFileSync('assets/images/rejection.png');
 var data = fs.readFileSync('assets/data.json');
 var states = fs.readFileSync('assets/states.json');
 var zip = fs.readFileSync('assets/zip.json');
@@ -102,6 +104,12 @@ var server = http.createServer((req, res) => {
     } else if (req.url === '/assets/images/box.png') {
         res.writeHead(200, { 'Content-Type': 'image/png' });
         res.write(image_7);
+    } else if (req.url === '/assets/images/mail.png') {
+        res.writeHead(200, { 'Content-Type': 'image/png' });
+        res.write(image_8);
+    } else if (req.url === '/assets/images/rejection.png') {
+        res.writeHead(200, { 'Content-Type': 'image/png' });
+        res.write(image_9);
     } else if (req.url === '/assets/data.json') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(data);

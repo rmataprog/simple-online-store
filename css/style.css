@@ -6,6 +6,10 @@ body div div.row {
     margin-bottom: 0px;
 }
 
+img.image_size {
+    height: 250px;
+}
+
 @media screen and (min-width: 1200px) {
     .carousel-slider {
         height: 80vh;

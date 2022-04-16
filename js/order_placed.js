@@ -14,7 +14,7 @@
     };
 
     var build_page = function() {
-        var order = (get_data())[0];
+        var order = ((get_data()).slice(-1))[0];
         var table = PLACED.order_details_ele.getElementsByTagName('table');
         var trs = table.item(0).getElementsByTagName('tr');
         trs.item(0).getElementsByTagName('td').item(0).textContent = order.date;
